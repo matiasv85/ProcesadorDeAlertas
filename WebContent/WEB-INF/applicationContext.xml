@@ -1,0 +1,59 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/isms" />
+		<property name="username" value="root" />
+		<property name="password" value="10284Fac" />
+	</bean>
+
+	<!--  bean id="clienteDAO" class="awers.modelo.dao.ClienteDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean-->
+	<bean id="alertaDAO" class="awers.modelo.dao.AlertaDAO">
+		<property name="dataSource" ref="dataSource" />
+		<property name="tabla" value="alertasmdi" />
+	</bean>
+	<bean id="logmdiDAO" class="awers.modelo.dao.LogmdiDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="configuracion" class="awers.sistema.Configuracion" init-method="inicializar">
+		<property name="user" value="admin" />
+		<property name="passwd" value="232431" />
+		<property name="urlAviso" value="http://20.0.20.114/sendmsg" />
+		
+		<property name="mensajeAvisoAlta" value="ALTA ALERTA - PRUEBAS" />
+		<property name="mensajeAvisoPendiente" value="ALERTA PENDIENTE" />
+		<property name="mensajeBajaAlerta" value="ALERTA CANCELADA" />
+		
+		<property name="mensajeNueveOnce" value="NUEVE ONCE" />
+		<property name="mensajeNoServicio" value="NO CUENTA CON ESTE SERVICIO EN ESTA DIRECCION" />
+		<property name="mensajeAlertaExistente" value="YA TIENE UN ALERTA ABIERTA" />
+		
+	</bean>
+	
+	<bean id="sistema" class="awers.sistema.Sistema" init-method="inicializar">
+		<property name="administradorDeHilos" ref="administradorDeHilos" />
+		<property name="configuracion" ref="configuracion" />
+	</bean>
+	
+	<bean id="administradorDeHilos" class="awers.proceso.AdministradorDeHilos">
+		<!-- property name="clienteDao" ref="clienteDAO" /-->
+		<property name="alertaDao" ref="alertaDAO" />
+		<property name="logmdiDao" ref="logmdiDAO" />
+	</bean>
+	
+	<bean id="interfazPHP" class="awers.proceso.InterfazPHP" >
+		<property name="sistema" ref="sistema" />
+	</bean>
+
+</beans>
