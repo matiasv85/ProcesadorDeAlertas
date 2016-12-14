@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import awers.beans.Alerta;
 import awers.modelo.tablas.Cliente;
 import awers.sistema.Sistema;
 
@@ -47,8 +48,9 @@ public class InterfazPHP {
 		}
 
 	}
-
-	public void informarNueveOnce(String clientNumber, String codigoAlerta) {
+	/*
+	 * @Deprecated
+	public void informarNueveOnce(String clientNumber, String codigoAlerta, String telefono) {
 		synchronized (clientNumber) {
 			try {
 				String url = String.format(this.sistema.getConfiguracion().getUrlFinAlerta(),
@@ -61,6 +63,22 @@ public class InterfazPHP {
 			}
 		}
 
+	}
+	*/
+	public void informarNueveOnce(Alerta alerta) {
+		synchronized (alerta.getClientNumber()) {
+			try {
+				String url = String.format(this.sistema.getConfiguracion().getUrlFinAlerta(),
+						alerta.getClientNumber(), alerta.getCodigoAlerta());
+
+				this.abrirUrl(url);
+				this.sistema.getAdministradorDeHilos().anularAlerta(alerta.getTelefono(), alerta.getCodigoAlerta());
+			} catch (Exception exc) {
+				log.error(exc.getMessage());
+			}
+		}
+
+		
 	}
 
 	/*
@@ -107,4 +125,6 @@ public class InterfazPHP {
 			log.error(e.getMessage());
 		}
 	}
+
+	
 }

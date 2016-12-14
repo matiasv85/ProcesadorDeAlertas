@@ -41,7 +41,7 @@ public class Alerta implements Runnable {
 			this.esperar(tiempoRestante);
 			Logmdi logmdi = new Logmdi(this.telefono);
 			this.logmdiDao.guardar(logmdi);
-			this.interfazPHP.informarNueveOnce(this.clientNumber, this.codigoAlerta);
+			this.interfazPHP.informarNueveOnce(this/*this.clientNumber, this.codigoAlerta*/);
 
 		} catch (InterruptedException e) {
 			// this.interfazPHP.informarBajaAlerta(this.clientNumber,
@@ -67,4 +67,54 @@ public class Alerta implements Runnable {
 			throw new InterruptedException("Fue cancelada el alerta");
 		}
 	}
+
+	public int getTiempoHastaPrimerAlerta() {
+		return tiempoHastaPrimerAlerta;
+	}
+
+	public void setTiempoHastaPrimerAlerta(int tiempoHastaPrimerAlerta) {
+		this.tiempoHastaPrimerAlerta = tiempoHastaPrimerAlerta;
+	}
+
+	public int getTiempoHastaSegundoAlerta() {
+		return tiempoHastaSegundoAlerta;
+	}
+
+	public void setTiempoHastaSegundoAlerta(int tiempoHastaSegundoAlerta) {
+		this.tiempoHastaSegundoAlerta = tiempoHastaSegundoAlerta;
+	}
+
+	public boolean isActivado() {
+		return activado;
+	}
+
+	public void setActivado(boolean activado) {
+		this.activado = activado;
+	}
+
+	public String getClientNumber() {
+		return clientNumber;
+	}
+
+	public void setClientNumber(String clientNumber) {
+		this.clientNumber = clientNumber;
+	}
+
+	public String getCodigoAlerta() {
+		return codigoAlerta;
+	}
+
+	public void setCodigoAlerta(String codigoAlerta) {
+		this.codigoAlerta = codigoAlerta;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+	
+	
 }

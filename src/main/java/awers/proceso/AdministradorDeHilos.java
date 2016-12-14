@@ -29,24 +29,18 @@ public class AdministradorDeHilos implements ApplicationContextAware {
 
 	}
 
-	public void anularAlerta(String clientNumber, String codigoAlerta) {
-		String idAlerta = clientNumber + "_" + codigoAlerta;
+	public void anularAlerta(String telefono, String codigoAlerta) {
+		String idAlerta = telefono + "_" + codigoAlerta;
 		this.alertas.get(idAlerta).anularAlerta();
 		this.alertas.remove(idAlerta);
-		this.alertaDao.eliminarPorId(clientNumber, codigoAlerta);
+		this.alertaDao.eliminarPorId(telefono, codigoAlerta);
 	}
 
 	public void levantarAlerta(String clientNumber, String telefono, int tiempoDuracionAlerta,
 	        String codigoAlerta) {
 		String idAlerta = clientNumber + "_" + codigoAlerta;
 		try {
-			// llamar a una URL para indicar el alta del servicio
-			/*
-			 * ((InterfazPHP) this.contexto.getBean("interfazPHP"))
-			 * .informarRegistroAlerta(this.cliente);
-			 */
-			// Mï¿½todo privado que crea el Thread -1 significa que tiene que
-			// tomar el tiempo del cliente
+			
 			this.crearAlerta(clientNumber, tiempoDuracionAlerta, codigoAlerta, idAlerta, telefono);
 
 			this.registrarAlerta(clientNumber, tiempoDuracionAlerta, telefono, codigoAlerta);
@@ -94,7 +88,16 @@ public class AdministradorDeHilos implements ApplicationContextAware {
 		}
 
 	}
-
+	/**
+	 * 
+	 * @param clientNumber
+	 * @param tiempoPrimerAlerta
+	 * @param codigoAlerta
+	 * @param idAlerta
+	 * @param telefono
+	 * 
+	 * Crea el Thread que disparará el alerta
+	 */
 	private void crearAlerta(String clientNumber, int tiempoPrimerAlerta, String codigoAlerta,
 	        String idAlerta, String telefono) {
 
@@ -102,7 +105,7 @@ public class AdministradorDeHilos implements ApplicationContextAware {
 		        (InterfazPHP) this.contexto.getBean("interfazPHP"), tiempoPrimerAlerta,
 		        codigoAlerta, logmdiDao, telefono);
 
-		this.alertas.put(clientNumber + "_" + codigoAlerta, alerta);
+		this.alertas.put(telefono + "_" + codigoAlerta, alerta);
 		new Thread(alerta).start();
 	}
 

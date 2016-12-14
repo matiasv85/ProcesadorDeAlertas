@@ -27,7 +27,7 @@ public class AlertaDAO {
 	private static final String QRY_INSERT = "INSERT INTO %s (client_number, " + " telefono, "
 	        + " codigo_alerta, " + "	duracion, " + "	fecha_activacion) " + "VALUES(?,?,?,?,?) ";
 
-	private static final String QRY_DELETE = "DELETE FROM %s WHERE client_number = ? and codigo_alerta = ?";
+	private static final String QRY_DELETE = "DELETE FROM %s WHERE telefono = ? and codigo_alerta = ?";
 
 	Connection conn = null;
 
